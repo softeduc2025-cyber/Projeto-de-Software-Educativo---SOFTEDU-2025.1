@@ -1,69 +1,84 @@
-# React + TypeScript + Vite
+# 📚 Projeto de Estantes e Guias de Conhecimento  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é uma aplicação **frontend** desenvolvida com **Vite + React + TypeScript + TailwindCSS**, sem backend próprio, utilizando **Firebase** para autenticação (Google Auth) e armazenamento de dados.  
 
-Currently, two official plugins are available:
+O objetivo do sistema é permitir que usuários se cadastrem, acessem **estantes temáticas**, criem e participem de **guias de estudo**, e interajam com conteúdos e atividades relacionados a diferentes áreas do conhecimento.  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Tecnologias Utilizadas  
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- ⚡ [Vite](https://vitejs.dev/) — Build tool rápido e moderno  
+- ⚛️ [React](https://react.dev/) — Biblioteca para construção da interface  
+- 📘 [TypeScript](https://www.typescriptlang.org/) — Tipagem estática para maior segurança e escalabilidade  
+- 🎨 [TailwindCSS](https://tailwindcss.com/) — Estilização rápida e responsiva  
+- 🔥 [Firebase](https://firebase.google.com/?hl=pt-br) — Autenticação (Google SSO), banco de dados e storage  
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## ✨ Funcionalidades Principais  
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 🔑 Autenticação  
+- Login e cadastro via **Google Auth (SSO)**  
+- Coleta de dados básicos: nome, e-mail, foto (se disponível)  
+- Possibilidade de adicionar informações adicionais (interesses, preferências, escolaridade, etc.)  
+
+### 📂 Estantes  
+- Áreas de conhecimento pré-cadastradas (Matemática, Física, Química, Conhecimentos Gerais, etc.)  
+- Sugestão de novas áreas pelos usuários  
+- Descrição acessível ao passar o mouse sobre as áreas  
+
+### 📘 Guias  
+- Criação, edição, exclusão e arquivamento de guias  
+- Associação a uma área do conhecimento  
+- Cadastro de informações do guia (nome, descrição, nível, tags, escolaridade opcional)  
+- Gerenciamento de permissões (OWNER, MODERATOR, CREATOR, PARTICIPANT)  
+- Questionários de diagnóstico inicial e atividades interativas  
+
+### 📝 Conteúdo e Atividades  
+- Edição de conteúdo com mídia (vídeo, imagem, link, áudio, iframe)  
+- Criação de atividades: formulários, múltipla escolha, gabarito, jogos e templates  
+- Status do conteúdo: **Draft, Pending, Reviewed, Published, Rejected**  
+- Fila de revisão de guias  
+
+---
+
+## 📦 Instalação e Uso  
+
+Clone o repositório:  
+
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Instale as dependências:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+Inicie o servidor de desenvolvimento:
+```bash
+npm run dev
+```
+
+## 🔧 Configuração do Firebase
+- Crie um projeto no Firebase Console.
+- Ative o Authentication com Google Sign-In.
+- Configure o Firestore e Storage (caso necessário para o projeto).
+- Adicione suas credenciais no arquivo 
+
+```bash
+VITE_FIREBASE_API_KEY=xxxx
+VITE_FIREBASE_AUTH_DOMAIN=xxxx
+VITE_FIREBASE_PROJECT_ID=xxxx
+VITE_FIREBASE_STORAGE_BUCKET=xxxx
+VITE_FIREBASE_MESSAGING_SENDER_ID=xxxx
+VITE_FIREBASE_APP_ID=xxxx
+```
+
+## 🛠️ Ferramentas de Desenvolvimento
+- 🎨 Figma — Design da interface
+- 🖥️ VSCode — Editor de código
+- 🐙 Git & GitHub — Versionamento e colaboração
