@@ -8,11 +8,9 @@ export interface User {
 }
 
 export interface UserInfo {
-    id: string;
-    userId: string;
-    birthDate: string;
     educationLevel: string;
-    specificNeeds: string;
-    createdAt: string;
     interests: string[];
+    specificNeeds: string;
+    birthDate: Date | null;
+    createdAt: Date;
 }
