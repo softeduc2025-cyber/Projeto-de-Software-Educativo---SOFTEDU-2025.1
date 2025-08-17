@@ -1,1 +1,1 @@
-export const AppRoutes = { home: "/", signIn: "/sign-in" };
+export const AppRoutes = { home: "/", signIn: "/sign-in", signUp: "/sign-up" };

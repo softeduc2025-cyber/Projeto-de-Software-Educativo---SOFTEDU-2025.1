@@ -22,12 +22,23 @@ function SignIn() {
     async function handlerSignIn() {
         setIsLoading(true);
 
-        const result = await signInWithGoogle();
+        const result = await signInWithGoogle(true);
         if (isError(result)) return showErrorMessage();
+        saveSession(result.data)
         setIsLoading(false)
 
-        saveSession(result.data)
         navigate(AppRoutes.home)
+    }
+
+    async function handlerSignUp() {
+        setIsLoading(true);
+
+        const result = await signInWithGoogle(false);
+        if (isError(result)) return showErrorMessage();
+        saveSession(result.data)
+        setIsLoading(false)
+
+        navigate(AppRoutes.signUp)
     }
 
     return (
@@ -35,7 +46,7 @@ function SignIn() {
             <div className="min-h-screen w-[60%] bg-zinc-50 flex flex-col items-center justify-center max-lg:min-w-full max-lg:p-6 max-lg:max-w-md">
                 <img src="src/assets/logo.png" className='w-68 h-68 object-contain' />
 
-                <SignInCard onSignUp={() => { }}>
+                <SignInCard onSignUp={handlerSignUp}>
                     <SignInButton isLoading={isLoading} onClick={handlerSignIn} />
                     <TermAndPolicies />
                 </SignInCard>

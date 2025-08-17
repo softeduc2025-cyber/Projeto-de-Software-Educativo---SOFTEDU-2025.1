@@ -21,19 +21,24 @@ async function getUserDetailsById(userId: string): Promise<UserInfo | null> {
     };
 }
 
-async function signInWithGoogle(): Promise<Result<User>> {
+async function signInWithGoogle(includeDetails: boolean): Promise<Result<User>> {
     try {
         const result = await signInWithPopup(auth, provider);
         const accessToken = await result.user.getIdToken();
 
-        return success<User>({
+        const user = {
             id: result.user.uid,
             accessToken: accessToken,
             email: result.user.email || "",
             name: result.user.displayName || null,
             photoURL: result.user.photoURL || null,
-            details: await getUserDetailsById(result.user.uid),
-        });
+        } as User;
+
+        if (includeDetails) {
+            user.details = await getUserDetailsById(result.user.uid);
+        }
+
+        return success(user);
     } catch (error) {
         console.error("signInWithGoogle:", error);
         const message = error instanceof Error ? error.message : "Erro desconhecido ao fazer login com o Google";
