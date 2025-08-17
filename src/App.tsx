@@ -1,15 +1,27 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { Home } from './pages'
+import { AuthProvider } from './contexts/AuthContext';
+import { PrivateRoute } from './components/PrivateRoute';
+import { Home, SignIn } from './pages'
 
 function App() {
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
 

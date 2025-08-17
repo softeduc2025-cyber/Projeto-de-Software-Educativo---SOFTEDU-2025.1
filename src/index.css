@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --color-zinc-50: #FFFCEE;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -9,7 +13,6 @@
 
   body {
     font-family: 'Inter', sans-serif;
-    background-color: white;
-    color: black;
+    background-color: var(--color-zinc-50);
   }
 }

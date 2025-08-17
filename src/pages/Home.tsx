@@ -1,9 +1,26 @@
-import React from "react"
+import { useAuth } from "../contexts/AuthContext";
 
-const Home: React.FC = () => {
+function Home() {
+  const { logout } = useAuth();
+
   return (
-    <div>
-      <h1>Hello Word</h1>
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md mx-auto">
+        <div className="text-center">
+          <h1 className="text-3xl font-extrabold text-gray-900 mb-8">
+            Welcome to ConectaMente
+          </h1>
+          <p className="text-gray-600 mb-8">
+            You are successfully logged in to the protected area.
+          </p>
+          <button
+            onClick={logout}
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
