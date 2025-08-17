@@ -11,8 +11,11 @@ import TermAndPolicies from './components/TermAndPolicts';
 import SignInBgImagem from './components/SignInBgImagem';
 import SignInButton from './components/SignInButton';
 import SignInCard from './components/SignInCard';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../utils/routes';
 
 function SignIn() {
+    const navigate = useNavigate();
     const { saveSession } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,7 +26,8 @@ function SignIn() {
         if (isError(result)) return showErrorMessage();
         setIsLoading(false)
 
-        saveSession(result.data);
+        saveSession(result.data)
+        navigate(AppRoutes.home)
     }
 
     return (

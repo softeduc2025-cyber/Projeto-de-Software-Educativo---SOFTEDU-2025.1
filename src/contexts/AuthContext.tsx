@@ -1,12 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
 
 import { removeUserSession, saveUserSession } from '../core/persister-service';
 import { auth, getUserDetailsById, signOutUser } from '../core/auth-service';
 
 import type { User } from '../core/entities/user';
-import { AppRoutes } from '../utils/routes';
 import { onAuthStateChanged } from 'firebase/auth';
 
 interface AuthContextType {
@@ -28,8 +26,6 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const navigate = useNavigate();
-
     const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
@@ -47,7 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                     details: await getUserDetailsById(data.uid),
                 }
 
-                saveSession(newUser, false);
+                saveSession(newUser);
             } else {
                 logout()
             }
@@ -56,12 +52,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    async function saveSession(user: User, toSignIn: boolean = true) {
+
+    async function saveSession(user: User) {
         setUser(user);
         saveUserSession(user)
         setIsAuthenticated(true);
-
-        if (toSignIn) navigate(AppRoutes.signIn);
     }
 
     async function logout() {
@@ -70,7 +65,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(null);
         setIsAuthenticated(false);
         removeUserSession();
-        navigate(AppRoutes.signIn);
     }
 
     return (
