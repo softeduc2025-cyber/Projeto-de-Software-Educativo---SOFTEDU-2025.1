@@ -67,7 +67,7 @@ npm run dev
 - Crie um projeto no Firebase Console.
 - Ative o Authentication com Google Sign-In.
 - Configure o Firestore e Storage (caso necessário para o projeto).
-- Adicione suas credenciais no arquivo 
+- Adicione suas credenciais no arquivo .env.local na raiz do projeto
 
 ```bash
 VITE_FIREBASE_API_KEY=xxxx

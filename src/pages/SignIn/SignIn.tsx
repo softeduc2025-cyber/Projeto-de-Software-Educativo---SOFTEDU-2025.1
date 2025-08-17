@@ -1,17 +1,26 @@
 import { Navigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import { useAuth } from '../../contexts/AuthContext';
-import GoogleIcon from '../../assets/google.svg';
+import { signInWithGoogle } from '../../core/auth-service';
+import { isError } from '../../core/entities/result';
 
+import SignInButton from './components/SignInButton';
+import { showErrorMessage } from '../utils';
 
 function SignIn() {
+    const [isLoading, setIsLoading] = useState(false);
     const { isAuthenticated } = useAuth();
 
     if (isAuthenticated) return <Navigate to='/' replace />;
 
     async function handlerSignIn() {
-        console.log('Google login clicked');
-        alert('Google login clicked');
+        setIsLoading(true);
+
+        const result = await signInWithGoogle();
+        if (isError(result)) return showErrorMessage();
+
+        setIsLoading(false)
     }
 
     return (
@@ -26,10 +35,7 @@ function SignIn() {
                         <p className="text-lg text-gray-600">Aprenda no seu ritmo e avance mais!</p>
                     </div>
 
-                    <button className="cursor-pointer bg-white hover:bg-gray-50 text-gray-700 font-semibold py-3 px-6 rounded-2xl border border-gray-300 shadow-sm transition-all duration-300 flex items-center justify-center space-x-3 w-full max-w-sm hover:shadow-md" onClick={handlerSignIn}>
-                        <img src={GoogleIcon} alt="Google Icon" className="w-6 h-6" />
-                        <span className="text-base">Entrar com Google</span>
-                    </button>
+                    <SignInButton isLoading={isLoading} onClick={handlerSignIn} />
 
                     <div className="mt-6 text-center">
                         <p className="text-gray-600 text-sm">Não tem conta? <a href="#" className="text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-300">Cadastre-se</a></p>
@@ -40,6 +46,7 @@ function SignIn() {
                     </div>
                 </div>
             </div>
+
             <div className="min-h-screen w-[40%] bg-white flex items-center justify-center max-lg:hidden">
                 <img src="src/assets/bg-sigin.png" className='w-full h-full object-cover' alt="logo" />
             </div>
