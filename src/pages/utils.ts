@@ -3,11 +3,12 @@ import toast from "react-hot-toast";
 
 interface Props extends CSSProperties {
     message: string;
+    duration?: number;
 }
 
-function showErrorMessage({ message, fontWeight }: Props) {
+function showErrorMessage({ message, fontWeight, duration }: Props) {
     toast.error(message, {
-        duration: 3000,
+        duration: duration || 3000,
         position: 'top-right',
         style: {
             color: '#fff',
@@ -18,14 +19,14 @@ function showErrorMessage({ message, fontWeight }: Props) {
 }
 
 
-function showSuccessMessage(message: string) {
+function showSuccessMessage({ message, fontWeight = 'normal' }: Props) {
     toast.success(message, {
         duration: 3000,
         position: 'top-right',
         style: {
             backgroundColor: '#34d399',
             color: '#fff',
-            fontWeight: 'bold',
+            fontWeight: fontWeight || 'bold',
         },
     })
 }

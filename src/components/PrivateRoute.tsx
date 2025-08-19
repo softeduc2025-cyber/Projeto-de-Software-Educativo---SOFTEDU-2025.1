@@ -1,12 +1,12 @@
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { AppRoutes } from "../utils/routes";
+import { SignIn } from "../pages";
 
 interface Props {
     children: React.ReactNode;
 }
 
 export function PrivateRoute({ children }: Props) {
-    const { isAuthenticated } = useAuth();
-    return isAuthenticated ? children : <Navigate to={AppRoutes.signIn} />;
+    const { user } = useAuth();
+    if (user) return children;
+    return <SignIn />;
 }

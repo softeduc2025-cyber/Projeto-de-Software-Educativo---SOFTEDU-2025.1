@@ -16,7 +16,13 @@ import SignUpBgImage from './components/SignUpLeftBgImage';
 import SignUpCardForm from './components/SignUpCardForm';
 
 import SelectDropdown from '../../components/SelectDropdown';
-import { showErrorMessage } from '../utils';
+import { showErrorMessage, showSuccessMessage } from '../utils';
+import { ignoreUserInfo, registerUserInfo } from '../../core/auth-service';
+import { useAuth } from '../../contexts/AuthContext';
+import { isError } from '../../core/entities/result';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '../../utils/routes';
+import type { UserInfo } from '../../core/entities/user';
 
 interface FormData {
     birthDate?: Date;
@@ -25,6 +31,10 @@ interface FormData {
 }
 
 function SignUp() {
+    const navigate = useNavigate();
+    const { user, saveSession } = useAuth();
+
+    const [isLoading, setIsLoading] = useState(false);
     const [interests, setInterests] = useState<PersonalInterest[]>([]);
     const [formData, setFormData] = useState<FormData>({
         schoolNivel: '',
@@ -48,7 +58,9 @@ function SignUp() {
         setFormData(prev => ({ ...prev, [key]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        if (isLoading) return
+
         e.preventDefault();
 
         const hasData = formData.birthDate ||
@@ -58,15 +70,62 @@ function SignUp() {
 
         if (!hasData) {
             return showErrorMessage({
-                message: 'Por favor, preencha pelo menos um campo antes de continuar',
                 fontWeight: 'normal',
+                message: 'Por favor, preencha pelo menos um campo antes de continuar',
             })
-
         }
 
-        console.log('Form submitted:', formData, interests);
+        setIsLoading(true)
+
+        const info: UserInfo = {
+            createdAt: new Date(),
+            birthDate: formData.birthDate,
+            educationLevel: formData.schoolNivel,
+            interests: interests.map(i => i.name),
+            specificNeeds: formData.specificNeeds,
+        }
+
+        const result = await registerUserInfo(user, info);
+
+        if (isError(result)) {
+            return showErrorMessage({
+                fontWeight: 'normal',
+                message: result.error?.message || 'Erro ao registrar informações do usuário',
+            });
+        }
+
+        showSuccessMessage({
+            message: 'Informações do usuário registradas com sucesso!',
+        });
+
+        let newUser = user
+        if (newUser) {
+            newUser.details = info
+            saveSession(newUser);
+        }
+
+        setIsLoading(false)
+        navigate(AppRoutes.home)
     };
 
+    const handleIgnore = async () => {
+        setIsLoading(true)
+
+        const result = await ignoreUserInfo(user);
+        if (isError(result)) {
+            return showErrorMessage({
+                fontWeight: 'normal',
+                message: result.error?.message || 'Erro ao ignorar informações do usuário',
+            });
+        }
+
+        showSuccessMessage({
+            message: 'Informações do usuário ignoradas, elas não serão coletadas.',
+        });
+
+        setIsLoading(false)
+        navigate(AppRoutes.home)
+    };
 
     return (
         <div className="h-screen w-full flex items-center justify-between overflow-hidden bg-white p-6">
@@ -127,7 +186,8 @@ function SignUp() {
                 </InputGroup>
 
                 <SignUpCardButtons
-                    onIgnore={() => console.log('Ignored')}
+                    isLoading={isLoading}
+                    onIgnore={handleIgnore}
                     onClick={handleSubmit}
                 />
 

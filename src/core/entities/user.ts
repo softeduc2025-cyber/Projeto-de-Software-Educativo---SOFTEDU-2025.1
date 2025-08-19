@@ -8,9 +8,9 @@ export interface User {
 }
 
 export interface UserInfo {
-    educationLevel: string;
+    createdAt: Date;
     interests: string[];
     specificNeeds: string;
-    birthDate: Date | null;
-    createdAt: Date;
+    educationLevel: string;
+    birthDate: Date | null | undefined;
 }

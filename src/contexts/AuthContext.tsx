@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { removeUserSession, saveUserSession } from '../core/persister-service';
+import { getUserSession, removeUserSession, saveUserSession } from '../core/persister-service';
 import { auth, getUserDetailsById, signOutUser } from '../core/auth-service';
 
 import type { User } from '../core/entities/user';
@@ -28,6 +28,16 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (user) return
+
+        const savedUser = getUserSession();
+        if (savedUser) {
+            setUser(savedUser);
+            setIsAuthenticated(true);
+        }
+    }, [user, isAuthenticated]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (data) => {

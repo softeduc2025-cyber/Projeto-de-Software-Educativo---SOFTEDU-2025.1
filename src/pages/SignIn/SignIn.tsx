@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { signInWithGoogle } from '../../core/auth-service';
-import { isError } from '../../core/entities/result';
+import { signInWithGoogle, userAlreadyExists } from '../../core/auth-service';
+import { isSuccess } from '../../core/entities/result';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { showErrorMessage } from '../utils';
@@ -13,33 +13,55 @@ import SignInButton from './components/SignInButton';
 import SignInCard from './components/SignInCard';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../utils/routes';
+import type { User } from '../../core/entities/user';
 
 function SignIn() {
     const navigate = useNavigate();
     const { saveSession } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
 
-    async function handlerSignIn() {
+    async function signInWithSSO(): Promise<User | undefined> {
         setIsLoading(true);
 
-        const result = await signInWithGoogle(true);
-        if (isError(result)) return showErrorMessage();
-        saveSession(result.data)
-        setIsLoading(false)
+        const result = await signInWithGoogle();
+        if (isSuccess(result)) return result.data
 
-        navigate(AppRoutes.home)
+        showErrorMessage({ message: result.error.message })
+        return Promise.reject(null);
     }
 
-    async function handlerSignUp() {
-        setIsLoading(true);
+    const handlerSignIn = async () => {
+        const user = await signInWithSSO();
+        if (!user) return;
 
-        const result = await signInWithGoogle(false);
-        if (isError(result)) return showErrorMessage();
-        saveSession(result.data)
-        setIsLoading(false)
+        const alreadyExists = await userAlreadyExists(user.id, user.email)
+        if (!alreadyExists) {
+            showErrorMessage({ message: "Usuário não cadastrado, por favor, complete seu cadastro." })
+            return setIsLoading(false)
+        }
 
-        navigate(AppRoutes.signUp)
-    }
+        setIsLoading(false);
+        saveSession(user);
+
+        navigate(AppRoutes.home);
+    };
+
+
+    const handlerSignUp = async () => {
+        const user = await signInWithSSO();
+        if (!user) return;
+
+        const alreadyExists = await userAlreadyExists(user.id, user.email)
+        if (alreadyExists) {
+            showErrorMessage({ message: "Usuário já cadastrado, tente com outra conta." })
+            return setIsLoading(false)
+        }
+
+        saveSession(user);
+        setIsLoading(false);
+
+        navigate(AppRoutes.signUp);
+    };
 
     return (
         <div className="bg-gray-50 min-h-screen flex items-center justify-center">
