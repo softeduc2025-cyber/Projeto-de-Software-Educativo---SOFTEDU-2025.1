@@ -2,6 +2,7 @@
 
 @theme {
   --color-zinc-50: #FFFCEE;
+  --color-zinc-60: #FFE897;
 }
 
 @layer base {
@@ -13,6 +14,5 @@
 
   body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--color-zinc-50);
   }
 }

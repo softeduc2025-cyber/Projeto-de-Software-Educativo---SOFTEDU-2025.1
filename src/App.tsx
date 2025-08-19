@@ -10,9 +10,10 @@ function App() {
       <Route
         path={AppRoutes.home}
         element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
+          <SignUp />
+          // <PrivateRoute>
+          //   <Home />
+          // </PrivateRoute>
         }
       />
 

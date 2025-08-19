@@ -1,13 +1,18 @@
+import type { CSSProperties } from "react";
 import toast from "react-hot-toast";
 
-function showErrorMessage(message: string = "Infelizmente, não foi possível fazer o login.") {
+interface Props extends CSSProperties {
+    message: string;
+}
+
+function showErrorMessage({ message, fontWeight }: Props) {
     toast.error(message, {
         duration: 3000,
         position: 'top-right',
         style: {
-            backgroundColor: '#f87171',
             color: '#fff',
-            fontWeight: 'bold',
+            backgroundColor: '#f87171',
+            fontWeight: fontWeight || 'bold',
         },
     })
 }
