@@ -86,4 +86,4 @@ async function userAlreadyExists(userId: string, email: string): Promise<boolean
     }
 }
 
-export { signInWithGoogle, signOutUser, getUserDetailsById, auth, registerUserInfo, userAlreadyExists, ignoreUserInfo }
+export { signInWithGoogle, signOutUser, getUserDetailsById, registerUserInfo, userAlreadyExists, ignoreUserInfo }

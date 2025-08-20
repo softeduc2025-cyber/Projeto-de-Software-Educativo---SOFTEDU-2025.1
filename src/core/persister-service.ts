@@ -1,6 +1,6 @@
 import type { User } from "./entities/user";
 
-const USER_KEY = "app_user";
+export const USER_KEY = "app_user";
 
 function saveUserSession(user: User) {
     try {
@@ -37,7 +37,6 @@ function getUserSession(): User | null {
         console.error(error);
         return null;
     }
-
 }
 
 function removeUserSession() {

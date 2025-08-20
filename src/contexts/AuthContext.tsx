@@ -1,85 +1,48 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { getUserSession, removeUserSession, saveUserSession } from '../core/persister-service';
-import { auth, getUserDetailsById, signOutUser } from '../core/auth-service';
-
+import { signOutUser } from '../core/auth-service';
 import type { User } from '../core/entities/user';
-import { onAuthStateChanged } from 'firebase/auth';
+
+import {
+    getUserSession,
+    saveUserSession,
+    removeUserSession,
+} from '../core/persister-service';
 
 interface AuthContextType {
     user: User | null;
     logout: () => void;
-    isAuthenticated: boolean;
-    saveSession: (user: User) => Promise<void>;
+    saveSession: (user: User) => void;
 }
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    return context;
-};
-
-interface AuthProviderProps {
-    children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const [user, setUser] = useState(() => {
+        return getUserSession();
+    });
 
     useEffect(() => {
-        if (user) return
-
-        const savedUser = getUserSession();
-        if (savedUser) {
-            setUser(savedUser);
-            setIsAuthenticated(true);
-        }
-    }, [user, isAuthenticated]);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (data) => {
-            if (data) {
-                const accessToken = await data.getIdToken();
-
-                const newUser = {
-                    id: data.uid,
-                    accessToken: accessToken,
-                    email: data.email || "",
-                    name: data.displayName || null,
-                    photoURL: data.photoURL || null,
-                    details: await getUserDetailsById(data.uid),
-                }
-
-                saveSession(newUser);
-            } else {
-                logout()
-            }
-        });
-
-        return () => unsubscribe();
+        const salvedUser = getUserSession();
+        if (salvedUser) setUser(salvedUser);
     }, []);
 
-
-    async function saveSession(user: User) {
+    function saveSession(user: User) {
         setUser(user);
         saveUserSession(user)
-        setIsAuthenticated(true);
     }
 
     async function logout() {
         await signOutUser();
 
         setUser(null);
-        setIsAuthenticated(false);
         removeUserSession();
     }
 
-    return (
-        <AuthContext.Provider value={{ logout, isAuthenticated, saveSession, user }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
+    return <AuthContext.Provider value={{ user, logout, saveSession }}>
+        {children}
+    </AuthContext.Provider>;
+}
+
+export default AuthProvider

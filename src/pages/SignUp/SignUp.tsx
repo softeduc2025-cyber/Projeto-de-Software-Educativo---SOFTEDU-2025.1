@@ -18,7 +18,7 @@ import SignUpCardForm from './components/SignUpCardForm';
 import SelectDropdown from '../../components/SelectDropdown';
 import { showErrorMessage, showSuccessMessage } from '../utils';
 import { ignoreUserInfo, registerUserInfo } from '../../core/auth-service';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/userAuth';
 import { isError } from '../../core/entities/result';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../utils/routes';

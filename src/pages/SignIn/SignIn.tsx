@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { signInWithGoogle, userAlreadyExists } from '../../core/auth-service';
 import { isSuccess } from '../../core/entities/result';
 
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/userAuth';
 import { showErrorMessage } from '../utils';
 
 
