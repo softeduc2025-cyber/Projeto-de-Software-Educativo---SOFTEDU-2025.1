@@ -1,4 +1,3 @@
-import GoogleIcon from '../../../assets/google.svg';
 import LoadingSpinner from '../../../components/Loading';
 
 interface Props {
@@ -12,7 +11,7 @@ function SignInButton({ onClick, isLoading }: Props) {
         {isLoading ? (
             <LoadingSpinner />
         ) : (<>
-            <img src={GoogleIcon} alt="Google Icon" className="w-6 h-6" />
+            <img src={"assets/google.svg"} alt="Google Icon" className="w-6 h-6" />
             <span className="text-base">Entrar com Google</span>
         </>)}
 

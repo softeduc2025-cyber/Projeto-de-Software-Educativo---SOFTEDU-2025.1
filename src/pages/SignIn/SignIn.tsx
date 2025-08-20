@@ -66,7 +66,7 @@ function SignIn() {
     return (
         <div className="bg-gray-50 min-h-screen flex items-center justify-center">
             <div className="min-h-screen w-[60%] bg-zinc-50 flex flex-col items-center justify-center max-lg:min-w-full max-lg:p-6 max-lg:max-w-md">
-                <img src="src/assets/logo.png" className='w-68 h-68 object-contain' />
+                <img src="assets/logo.png" className='w-68 h-68 object-contain' />
 
                 <SignInCard onSignUp={handlerSignUp}>
                     <SignInButton isLoading={isLoading} onClick={handlerSignIn} />

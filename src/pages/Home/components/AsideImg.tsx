@@ -9,7 +9,7 @@ function AsideImgLeft() {
             <img
                 alt="Logo"
                 className="object-contain  p-5"
-                src="src/assets/home-01.png"
+                src="assets/home-01.png"
             />
         </aside>
     );
@@ -21,14 +21,14 @@ function AsideImgRight() {
             <img
                 alt="Logo"
                 className="object-contain w-28 h-28"
-                src="src/assets/logo.png"
+                src="assets/logo.png"
             />
 
             <div className="py-44 p-5">
                 <img
                     alt="Logo"
                     className="object-contain"
-                    src="src/assets/home-02.png"
+                    src="assets/home-02.png"
                 />
             </div>
         </aside>
