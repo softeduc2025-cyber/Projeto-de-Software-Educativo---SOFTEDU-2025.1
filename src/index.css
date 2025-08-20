@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  --color-zinc-50: #FFFCEE;
+  --color-zinc-60: #FFE897;
+  --color-zinc-70: #FFFBED;
+  --color-purple-500: #583687;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -9,7 +16,5 @@
 
   body {
     font-family: 'Inter', sans-serif;
-    background-color: white;
-    color: black;
   }
 }
